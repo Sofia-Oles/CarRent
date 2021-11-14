@@ -1,1 +1,5 @@
 # EPAM_final_project
+
+python -m venv .VENV
+.VENV\Scripts\activate
+pip install -r requirements.txt
