@@ -1,8 +1,8 @@
 from flask import render_template, url_for
-from . import users
+from . import public_blueprint
 
 
-@users.route("/all")
+@public_blueprint.route("/all")
 def show_cars():
     """
     Render the cars page template

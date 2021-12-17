@@ -1,9 +1,3 @@
-# from flask import Flask, render_template
-# from config import Configuration
-#
-# app = Flask(__name__)
-# app.config.from_object(Configuration)
-
 from flask import Flask
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_bcrypt import Bcrypt
@@ -25,8 +19,8 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Configuration)
 
-    from .views import users
-    app.register_blueprint(users)
+    from .views import public_blueprint
+    app.register_blueprint(public_blueprint)
 
     # db.init_app(app)
     #
