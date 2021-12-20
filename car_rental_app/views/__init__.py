@@ -1,5 +1,5 @@
 from flask import render_template
-from flask import Blueprint, url_for
+from flask import Blueprint
 
 public_blueprint = Blueprint("public", __name__)
 
