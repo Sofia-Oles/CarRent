@@ -32,13 +32,11 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-
-
     # login_manager.init_app(app)
     #
     # Migrate(app, db)
 
-    # from .rest import employee_api, department_api
+    # from .rest import
 
     # api = Api(app)
 

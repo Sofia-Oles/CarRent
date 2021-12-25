@@ -1,0 +1,19 @@
+{%extends 'base.html' %}
+
+{%block title%}
+    Cars
+{%endblock%}
+
+
+{#{%block content_title%}#}
+{#    Cars page#}
+{#{%endblock%}#}
+
+{%block content%}
+    Different cars here
+    {% for car in cars %}
+    <p>
+    car id = {{ car.id }}
+    </p>
+    {% endfor %}
+{%endblock%}

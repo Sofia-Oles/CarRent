@@ -11,11 +11,11 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(50), nullable=False)
     balance = db.Column(db.Integer, default=0)
-    passport_id = db.Column(db.Integer,
-                            db.ForeignKey("passport.id"))
+    passport_id = db.Column(db.Integer, db.ForeignKey("passport.id"))
     password = db.Column(db.String(10), nullable=False)
 
     user = db.relationship("Order",
+                           cascade="all,delete",
                            backref="creator")
 
     def replenish_balance(self, balance):
@@ -25,8 +25,11 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 # class UserSchema(Schema):
 #     login = fields.String(required=True)
 #     password = fields.String(validate=validate.Length(min=4), required=True)
-#     # password2 = fields.String(validate=validate.Length(min=8), required=True)
+#     password2 = fields.String(validate=validate.Length(min=8), required=True)
