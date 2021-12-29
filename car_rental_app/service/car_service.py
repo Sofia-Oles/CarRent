@@ -31,7 +31,7 @@ def create_car(name, model, year, price_per_day, people_count):
 def read_all_cars():
     """
     Select all records from car table
-    :return: the list of all cars
+    :return: the list of all cars in json
     """
     try:
         cars = Car.query.all()
@@ -46,7 +46,7 @@ def read_car_by_id(id):
     """
     Get a specific car from car table by id
     :param id: car`s id
-    :return: car object with a special id
+    :return: data in json format
     """
     try:
         car = Car.query.get(id)
@@ -60,6 +60,7 @@ def read_car_by_id(id):
 def update_car(id, name=None, model=None, year=None, price_per_day=None, people_count=None):
     """
     Update an existing car without overwriting the unspecified elements as Null
+    :param id: car`s id
     :param name: car`s name
     :param model: car`s model
     :param year: car`s year of production
@@ -92,6 +93,10 @@ def delete_car(id):
     Delete an existing car
     :param id: id by which the required car is deleted
     """
-    car = Car.query.get_or_404(id)
-    db.session.delete(car)
-    db.session.commit()
+    try:
+        car = Car.query.get_or_404(id)
+        db.session.delete(car)
+        db.session.commit()
+    except:
+        logger.warning("Can`t delete a specific car")
+    return None

@@ -18,16 +18,6 @@ class User(db.Model):
                            cascade="all,delete",
                            backref="creator")
 
-    def replenish_balance(self, balance):
-        self.balance = balance
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
 
 # class UserSchema(Schema):
 #     login = fields.String(required=True)

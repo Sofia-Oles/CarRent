@@ -12,7 +12,3 @@ class Order(db.Model):
     start_date = db.Column(db.DateTime, nullable=False, server_default="09:00")
     end_date = db.Column(db.DateTime, nullable=False)
     price = db.Column(db.Integer, nullable=False)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
