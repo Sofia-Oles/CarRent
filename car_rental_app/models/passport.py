@@ -1,5 +1,5 @@
-from car_rental_app import db, ma
-from marshmallow import Schema, fields, validate, ValidationError
+from car_rental_app import db
+from marshmallow import Schema, fields, validate
 
 
 class Passport(db.Model):
@@ -15,3 +15,27 @@ class Passport(db.Model):
                            uselist=False,
                            cascade="all,delete",
                            backref="passport")
+
+    def to_dict(self):
+        """
+        Serializer that returns a dictionary from its fields
+        :return: the passport in json format
+        """
+        return {
+            "id": self.id,
+            "series": self.series,
+            "number": self.number,
+            "published_by": self.published_by,
+            "date_of_birth": self.date_of_birth
+        }
+
+
+class PassportSchema(Schema):
+    """
+    Marshmallow.Schema makes it easy to check for the existence and data types of fields,
+    which can be inserted to Passport table.
+    """
+    series = fields.String(validate=validate.Length(equal=2), required=True)
+    number = fields.Integer(required=True)
+    published_by = fields.Integer(validate=validate.Range(min=2, max=8), required=True)
+    date_of_birth = fields.Date(required=True)

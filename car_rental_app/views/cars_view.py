@@ -1,8 +1,6 @@
-import datetime as dt
-from flask import render_template, url_for, request, jsonify
+from flask import render_template, url_for, request, jsonify, redirect
 from flask_restful.inputs import date
 from flask import Blueprint
-from datetime import datetime
 
 public_blueprint = Blueprint("public", __name__)
 

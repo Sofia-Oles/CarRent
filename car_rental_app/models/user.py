@@ -1,5 +1,5 @@
-from car_rental_app import db, ma
-from marshmallow import Schema, fields, validate, ValidationError
+from car_rental_app import db
+from marshmallow import Schema, fields, validate
 
 
 class User(db.Model):
@@ -18,8 +18,28 @@ class User(db.Model):
                            cascade="all,delete",
                            backref="creator")
 
+    def to_dict(self):
+        """
+        Serializer that returns a dictionary from its fields
+        :return: the department in json format
+        """
+        return {
+             "id": self.id,
+             "login": self.login,
+             "name": self.name,
+             "surname": self.surname,
+             "balance": self.balance,
+             "passport_data": self.passport.to_dict()
+        }
 
-# class UserSchema(Schema):
-#     login = fields.String(required=True)
-#     password = fields.String(validate=validate.Length(min=4), required=True)
-#     password2 = fields.String(validate=validate.Length(min=8), required=True)
+
+class UserSchema(Schema):
+    """
+    Marshmallow.Schema makes it easy to check for the existence and data types of fields,
+    which can be inserted to User table.
+    """
+    login = fields.Email(required=True)
+    name = fields.String(required=True)
+    surname = fields.String(required=True)
+    password = fields.String(validate=validate.Length(min=4), required=True)
+    password2 = fields.String(validate=validate.Length(min=4), required=True)

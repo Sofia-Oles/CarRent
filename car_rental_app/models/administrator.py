@@ -7,10 +7,6 @@ class Administrator(db.Model):
     __tablename__ = "administrator"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    login = db.Column(db.String(50), nullable=False)
+    login = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(50), nullable=False)
     balance = db.Column(db.Integer, nullable=False, default=0)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()

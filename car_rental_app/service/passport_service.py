@@ -1,7 +1,6 @@
 """
 This module consists of the CRUD operations to work with 'passport' table
 """
-from flask import jsonify
 from car_rental_app import db
 from ..models.passport import Passport
 from log import logger
@@ -36,7 +35,7 @@ def read_passport_by_id(id):
     """
     try:
         passport = Passport.query.get(id)
-        return jsonify(passport_data=[passport.series, passport.number, passport.published_by, passport.date_of_birth])
+        return passport
     except:
         logger.warning("Can`t get a specific passport from db")
     return None
@@ -64,7 +63,6 @@ def update_passport(id, series=None, number=None, published_by=None, date_of_bir
             passport.date_of_birth = date_of_birth
         db.session.add(passport)
         db.session.commit()
-        return passport
     except:
         logger.warning("Can`t update a certain passport")
     return None

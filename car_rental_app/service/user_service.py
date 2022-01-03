@@ -1,10 +1,9 @@
 """
 This module consists of the CRUD operations to work with 'user' table
 """
-from flask import jsonify
 from car_rental_app import db
 from ..models.user import User
-from ..models.passport import Passport
+from .passport_service import read_passport_by_id
 from log import logger
 
 
@@ -22,9 +21,10 @@ def create_user(login, name, surname, passport, password):
         user = User(login=login, name=name, surname=surname, passport=passport, password=password)
         db.session.add(user)
         db.session.commit()
+        return user
     except:
         logger.error("Can`t add a user to the table")
-    return None
+        return None
 
 
 def read_all_users():
@@ -34,8 +34,7 @@ def read_all_users():
     """
     try:
         users = User.query.all()
-        return jsonify(user_data=[[user.login, user.name, user.surname,
-                                   user.passport_id, user.password] for user in users])
+        return users
     except:
         logger.warning("Can`t get users from db")
     return None
@@ -49,7 +48,7 @@ def read_user_by_id(id):
     """
     try:
         user = User.query.get(id)
-        return jsonify([user.login, user.name, user.surname, user.passport_id, user.password])
+        return user
     except:
         logger.warning("Can`t get a user from db")
     return None
@@ -106,7 +105,7 @@ def delete_user(id):
     """
     try:
         user = User.query.get_or_404(id)
-        passport = Passport.query.filter_by(id=user.passport_id).first()
+        passport = read_passport_by_id(user.id)
         db.session.delete(passport)
         db.session.delete(user)
         db.session.commit()
