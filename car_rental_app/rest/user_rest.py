@@ -3,9 +3,9 @@ Module contains classes to work with REST API for User.
 Class:
     UserAPI(Resource) uses user_service
 """
-from datetime import date, datetime
-from flask import redirect, jsonify, request
-from flask_restful import Resource, abort, reqparse
+from datetime import datetime
+from flask import jsonify, request
+from flask_restful import Resource
 from marshmallow import ValidationError
 
 from ..models.passport import PassportSchema
@@ -26,17 +26,12 @@ class UserListAPI(Resource):
     def get():
         """
         Method overrides get method of Resource and works on get method, retrieving all users and their passport info.
-        :return: dict of users data in json format
+        :return: dict of users` data
         """
         users_list = user_service.read_all_users()
         user_data = [user.to_dict() for user in users_list]
         return jsonify(users_data=user_data)
 
-    # {
-    #     "series": "KC", "number": 22899239, "published_by": 492, "date_of_birth": "2001-12-22",
-    #     "login": "user222@gmail.com", "name": "Ivan", "surname": "Ivanov", "password": "12345",
-    #     "repeat_password": "12345"
-    # }
     @staticmethod
     def post():
         """
@@ -44,6 +39,8 @@ class UserListAPI(Resource):
         :return: response in json format or error messages
         """
         data = request.get_json()
+        if not data:
+            return jsonify(message="Fill the data", status=400)
         series = data["series"]
         number = data["number"]
         published_by = data["published_by"]
@@ -53,9 +50,6 @@ class UserListAPI(Resource):
         surname = data["surname"]
         password = data["password"]
         password2 = data["repeat_password"]
-
-        if not data:
-            return jsonify(message="Fill the data", status=400)
         try:
             # validation on user & passport schemas
             PassportSchema().load({"series": series,
@@ -70,11 +64,11 @@ class UserListAPI(Resource):
                                "password2": password2})
         except ValidationError as err:
             return jsonify(message=err.messages, status=400)
-
+        if User.query.filter_by(login=login).first() is not None:
+            return jsonify(message="User with this login is already exist", status=409)
         try:
             # converting to specified data format
             data_to = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
-
             if password != password2:
                 return jsonify(message="Passwords aren`t equal", status=400)
 
@@ -82,11 +76,7 @@ class UserListAPI(Resource):
                                                             number=number,
                                                             published_by=published_by,
                                                             date_of_birth=data_to)
-
             if new_passport:
-                if User.query.filter_by(login=login).first() is not None:
-                    return jsonify(message="User with this login is already exist", status=409)
-
                 new_user = user_service.create_user(
                     login=login,
                     name=name,
@@ -113,12 +103,15 @@ class UserApi(Resource):
     def get(id):
         """
         Method overrides get method of Resource and works on get method, retrieving user by id.
-        :return: dict of users data in json format
+        :return: dict of user`s data
         """
         try:
             user = user_service.read_user_by_id(id)
-            user_data = user.to_dict()
-            return jsonify(user_data=user_data, status=200)
+            if user:
+                user_data = user.to_dict()
+                return jsonify(user_data=user_data, status=200)
+            else:
+                return jsonify(message=f"No such user", status=404)
         except AttributeError as e:
             logger.error(f"{e}")
             return jsonify(message=f"{e}", status=400)
@@ -135,10 +128,11 @@ class UserApi(Resource):
     def delete(id):
         """
          Method overrides delete method of Resource and works on delete method, deleting user by id
-         :return: messages or errors
+         :return: response in json format or error messages
         """
-        user = user_service.read_user_by_id(id)
-        if user:
+        try:
             user_service.delete_user(id)
             return jsonify(message="User was deleted successfully", status=200)
-        return jsonify(message="No such user", status=400)
+        except:
+            logger.error(f"Failed to delete user by id")
+            return jsonify(message="No such user", status=400)

@@ -52,7 +52,7 @@ def update_passport(id, series=None, number=None, published_by=None, date_of_bir
     :return: None
     """
     try:
-        passport = Passport.query.get_or_404(id)
+        passport = Passport.query.get(id)
         if series:
             passport.series = series
         elif number:

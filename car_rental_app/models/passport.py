@@ -37,5 +37,5 @@ class PassportSchema(Schema):
     """
     series = fields.String(validate=validate.Length(equal=2), required=True)
     number = fields.Integer(required=True)
-    published_by = fields.Integer(validate=validate.Range(min=2, max=8), required=True)
+    published_by = fields.Integer(required=True)
     date_of_birth = fields.Date(required=True)

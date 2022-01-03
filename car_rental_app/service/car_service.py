@@ -69,7 +69,7 @@ def update_car(id, name=None, model=None, year=None, price_per_day=None, people_
     :return: None
     """
     try:
-        car = Car.query.get_or_404(id)
+        car = Car.query.get(id)
         if name:
             car.name = name
         elif model:
@@ -94,7 +94,7 @@ def delete_car(id):
     :param id: id by which the required car is deleted
     """
     try:
-        car = Car.query.get_or_404(id)
+        car = Car.query.get(id)
         db.session.delete(car)
         db.session.commit()
     except:

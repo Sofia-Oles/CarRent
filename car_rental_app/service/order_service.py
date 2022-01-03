@@ -20,8 +20,8 @@ def create_order(creator, car, start_date, end_date, price):
     :return: None
     """
     try:
-        user = User.query.get_or_404(creator.id)
-        car = Car.query.get_or_404(car.id)
+        user = User.query.get(creator.id)
+        car = Car.query.get(car.id)
         order = Order(creator=user, car=car, start_date=start_date, end_date=end_date, price=price)
         db.session.add(order)
         db.session.commit()
@@ -64,7 +64,7 @@ def delete_order(id):
     :return: None
     """
     try:
-        order = Order.query.get_or_404(id)
+        order = Order.query.get(id)
         db.session.delete(order)
         db.session.commit()
     except:

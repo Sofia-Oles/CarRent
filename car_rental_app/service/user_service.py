@@ -65,7 +65,7 @@ def update_user(id, login=None, name=None, surname=None, password=None):
     :return: None
     """
     try:
-        user = User.query.get_or_404(id)
+        user = User.query.get(id)
         if login:
             user.login = login
         elif name:
@@ -104,7 +104,7 @@ def delete_user(id):
     :return: None
     """
     try:
-        user = User.query.get_or_404(id)
+        user = User.query.get(id)
         passport = read_passport_by_id(user.id)
         db.session.delete(passport)
         db.session.delete(user)
