@@ -18,4 +18,6 @@ def show_cars():
     """
     Render the cars page template
     """
+
     return render_template("cars.html")
+

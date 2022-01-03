@@ -32,9 +32,11 @@ class UserListAPI(Resource):
         user_data = [user.to_dict() for user in users_list]
         return jsonify(users_data=user_data)
 
-    # {"series": "MC", "number": 226099823, "published_by": 4622, "date_of_birth": "2001-12-22",
-    #  "login": "user222@gmail.com", "name": "ckk", "surname": "NOTE7", "password": "12345", "repeat_password":
-    #      "12345"}
+    # {
+    #     "series": "KC", "number": 22899239, "published_by": 492, "date_of_birth": "2001-12-22",
+    #     "login": "user222@gmail.com", "name": "Ivan", "surname": "Ivanov", "password": "12345",
+    #     "repeat_password": "12345"
+    # }
     @staticmethod
     def post():
         """
@@ -42,42 +44,55 @@ class UserListAPI(Resource):
         :return: response in json format or error messages
         """
         data = request.get_json()
+        series = data["series"]
+        number = data["number"]
+        published_by = data["published_by"]
+        date_of_birth = data["date_of_birth"]
+        login = data["login"]
+        name = data["name"]
+        surname = data["surname"]
+        password = data["password"]
+        password2 = data["repeat_password"]
+
         if not data:
             return jsonify(message="Fill the data", status=400)
         try:
-            # I validate USER & PASSPORT for not empty or ''
-            PassportSchema().load({"series": data["series"],
-                                   "number": data["number"],
-                                   "published_by": data["published_by"],
-                                   "date_of_birth": data["date_of_birth"]})
+            # validation on user & passport schemas
+            PassportSchema().load({"series": series,
+                                   "number": number,
+                                   "published_by": published_by,
+                                   "date_of_birth": date_of_birth})
 
-            UserSchema().load({"login": data["login"], "name": data["name"],
-                               "surname": data["surname"], "password": data["password"],
-                               "password2": data["repeat_password"]})
+            UserSchema().load({"login": login,
+                               "name": name,
+                               "surname": surname,
+                               "password": password,
+                               "password2": password2})
         except ValidationError as err:
             return jsonify(message=err.messages, status=400)
 
         try:
             # converting to specified data format
-            date_of_birth = data["date_of_birth"]
             data_to = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
 
-            if data["password"] != data["repeat_password"]:
+            if password != password2:
                 return jsonify(message="Passwords aren`t equal", status=400)
 
-            new_passport = passport_service.create_passport(series=data["series"], number=data["number"],
-                                                            published_by=data["published_by"], date_of_birth=data_to)
+            new_passport = passport_service.create_passport(series=series,
+                                                            number=number,
+                                                            published_by=published_by,
+                                                            date_of_birth=data_to)
 
             if new_passport:
-                if User.query.filter_by(login=data["login"]).first() is not None:
+                if User.query.filter_by(login=login).first() is not None:
                     return jsonify(message="User with this login is already exist", status=409)
 
                 new_user = user_service.create_user(
-                    login=data["login"],
-                    name=data["name"],
-                    surname=data["surname"],
+                    login=login,
+                    name=name,
+                    surname=surname,
                     passport=new_passport,
-                    password=bcrypt.generate_password_hash(data["password"])
+                    password=bcrypt.generate_password_hash(password)
                 )
                 if not new_user:
                     return jsonify(message="Wrong user data", status=400)
@@ -114,28 +129,7 @@ class UserApi(Resource):
         Method overrides put method of Resource and works on put method, editing users
         :return: response in json format or error messages
         """
-        #
-        # login = args['login']
-        # password = args['password']
-        # user = User.query.filter_by(login=login).first()
-        # new_login = args['new_login']
-        # new_password = args['new_password']
-        # id = args['id']
-        # page = args.get('page')
-        # if user and user.id == 1 and user.password == password:
-        #     if check_empty_strings(new_login, new_password) and User.query.get(id) \
-        #             and (not User.query.filter_by(login=new_login).first() or User.query.get(id).login == new_login):
-        #         change_user(id, new_login, new_password)
-        #         logger.info(f'Edited user: id: "{id}" new_login: "{new_login}"\tnew_password: "{new_password}"')
-        #         if page and page == 'True':
-        #             return redirect('/users')
-        #         return {'message': 'EDIT_SUCCESS'}
-        #     logger.info(f'Edited user: id: "{id}" new_login: "{new_login}"\tnew_password: "{new_password}"')
-        #     if page and page == 'True':
-        #         return redirect('/users')
-        #     abort(401, error='VALUES_INCORRECT')
-        # logger.info(f'Failed editing user: "{login}"\tpassword: "{password}"')
-        # abort(401, error='CREDENTIALS_INCORRECT')
+        pass
 
     @staticmethod
     def delete(id):
