@@ -35,7 +35,7 @@ def read_all_cars():
     """
     try:
         cars = Car.query.all()
-        return jsonify(all_cars=[[i.name, i.model, i.year, i.price_per_day, i.people_count] for i in cars])
+        return cars
     except:
         logger.warning("Can`t get cars from db")
     return None
@@ -50,37 +50,22 @@ def read_car_by_id(id):
     """
     try:
         car = Car.query.get(id)
-        return jsonify([car.name, car.model, car.year, car.price_per_day, car.people_count])
+        return car
     except:
         logger.warning("Can`t get a car from db")
     return None
 
 
 # admin
-def update_car(id, name=None, model=None, year=None, price_per_day=None, people_count=None):
+def update_car(id, data):
     """
     Update an existing car without overwriting the unspecified elements as Null
     :param id: car`s id
-    :param name: car`s name
-    :param model: car`s model
-    :param year: car`s year of production
-    :param price_per_day: car`s price for rent
-    :param people_count: car`s capacity
+    :param data: data to change
     :return: None
     """
     try:
-        car = Car.query.get(id)
-        if name:
-            car.name = name
-        elif model:
-            car.model = model
-        elif year:
-            car.year = year
-        elif price_per_day:
-            car.price_per_day = price_per_day
-        elif people_count:
-            car.people_count = people_count
-        db.session.add(car)
+        db.session.query(Car).filter_by(id=id).update(data)
         db.session.commit()
     except:
         logger.warning("Can`t update a certain car")

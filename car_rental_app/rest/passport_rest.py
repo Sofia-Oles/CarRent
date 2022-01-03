@@ -1,7 +1,8 @@
 """
 Module contains classes to work with REST API for Passport.
 Class:
-    PassportAPI(Resource) uses passport_service
+    PassportListAPI(Resource)
+    PassportAPI(Resource)
 """
 from datetime import datetime
 from flask import jsonify, request

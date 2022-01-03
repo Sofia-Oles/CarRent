@@ -1,7 +1,8 @@
 """
 Module contains classes to work with REST API for User.
 Class:
-    UserAPI(Resource) uses user_service
+    UserListAPI(Resource)
+    UserAPI(Resource)
 """
 from datetime import datetime
 from flask import jsonify, request
@@ -30,7 +31,7 @@ class UserListAPI(Resource):
         """
         users_list = user_service.read_all_users()
         user_data = [user.to_dict() for user in users_list]
-        return jsonify(users_data=user_data)
+        return jsonify(users_data=user_data, status=200)
 
     @staticmethod
     def post():
