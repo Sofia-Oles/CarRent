@@ -42,22 +42,13 @@ class UserListAPI(Resource):
         data = request.get_json()
         if not data:
             return jsonify(message="Fill the data", status=400)
-        series = data["series"]
-        number = data["number"]
-        published_by = data["published_by"]
-        date_of_birth = data["date_of_birth"]
+        passport_id = data["passport_id"]
         login = data["login"]
         name = data["name"]
         surname = data["surname"]
         password = data["password"]
         password2 = data["repeat_password"]
         try:
-            # validation on user & passport schemas
-            PassportSchema().load({"series": series,
-                                   "number": number,
-                                   "published_by": published_by,
-                                   "date_of_birth": date_of_birth})
-
             UserSchema().load({"login": login,
                                "name": name,
                                "surname": surname,
@@ -68,15 +59,11 @@ class UserListAPI(Resource):
         if User.query.filter_by(login=login).first() is not None:
             return jsonify(message="User with this login is already exist", status=409)
         try:
-            # converting to specified data format
-            data_to = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
             if password != password2:
                 return jsonify(message="Passwords aren`t equal", status=400)
 
-            new_passport = passport_service.create_passport(series=series,
-                                                            number=number,
-                                                            published_by=published_by,
-                                                            date_of_birth=data_to)
+            new_passport = passport_service.read_passport_by_id(passport_id)
+
             if new_passport:
                 new_user = user_service.create_user(
                     login=login,
@@ -120,10 +107,28 @@ class UserApi(Resource):
     @staticmethod
     def put(id):
         """
-        Method overrides put method of Resource and works on put method, editing users
+        Method overrides put method of Resource and works on put method, editing user by id
+        (works as patch, without overwriting old data as Null)
         :return: response in json format or error messages
         """
-        pass
+        data = request.json
+        try:
+            UserSchema().load(data, partial=True)
+        except ValidationError as err:
+            return jsonify(message=err.messages, status=400)
+        try:
+            if user_service.read_user_by_id(id):
+                try:
+                    if data["new_password"] == data["new_password_repeat"]:
+                        data["new_password"] = bcrypt.generate_password_hash(data["new_password"])
+                except:
+                    logger.error(f"Failed to hash password!")
+                user_service.update_user(id, data)
+                return jsonify(message="User was updated successfully", status=200)
+            return jsonify(message="Not valid user id", status=400)
+        except:
+            logger.error(f"Failed to update user.")
+            return jsonify(message=f"Failed to update user", status=400)
 
     @staticmethod
     def delete(id):
@@ -132,8 +137,10 @@ class UserApi(Resource):
          :return: response in json format or error messages
         """
         try:
-            user_service.delete_user(id)
-            return jsonify(message="User was deleted successfully", status=200)
+            if user_service.read_user_by_id(id):
+                user_service.delete_user(id)
+                return jsonify(message="User was deleted successfully", status=200)
+            return jsonify(message="Not valid user id", status=400)
         except:
             logger.error(f"Failed to delete user by id")
             return jsonify(message="No such user", status=400)

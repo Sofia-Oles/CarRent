@@ -59,7 +59,7 @@ def read_car_by_id(id):
 # admin
 def update_car(id, data):
     """
-    Update an existing car without overwriting the unspecified elements as Null
+    Update an existing car
     :param id: car`s id
     :param data: data to change
     :return: None

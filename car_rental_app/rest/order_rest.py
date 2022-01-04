@@ -93,20 +93,37 @@ class OrderApi(Resource):
     @staticmethod
     def put(id):
         """
-        Method overrides put method of Resource and works on put method, editing car
+        Method overrides put method of Resource and works on put method, editing car by id
+        (works as patch, without overwriting old data as Null)
         :return: response in json format or error messages
         """
-        pass
+        data = request.json
+        try:
+            data["start_date"] = datetime.fromisoformat(data["start_date"]).replace(hour=9, minute=00)
+            data["end_date"] = datetime.fromisoformat(data["end_date"]).replace(hour=9, minute=00)
+        except Exception as e:
+            logger.error(f"Failed to create order, {e}")
+            return jsonify(message=f"No {e}", status=400)
+        try:
+            if order_service.read_order_by_id(id):
+                order_service.update_order(id, data)
+                return jsonify(message="Order was updated successfully", status=200)
+            return jsonify(message="Not valid order id", status=400)
+        except:
+            logger.error(f"Failed to update order.")
+            return jsonify(message=f"Failed to update order", status=400)
 
     @staticmethod
     def delete(id):
         """
-         Method overrides delete method of Resource and works on delete method, deleting order by id
-         :return: response in json format or error messages
+        Method overrides delete method of Resource and works on delete method, deleting order by id
+        :return: response in json format or error messages
         """
         try:
-            order_service.delete_order(id)
-            return jsonify(message="Order was deleted successfully", status=200)
+            if order_service.read_order_by_id(id):
+                order_service.delete_order(id)
+                return jsonify(message="Order was deleted successfully", status=200)
+            return jsonify(message="Not valid order id", status=400)
         except:
             logger.error(f"Failed to delete order by id")
             return jsonify(message="No such order", status=400)

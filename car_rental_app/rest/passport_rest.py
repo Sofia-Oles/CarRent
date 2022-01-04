@@ -31,17 +31,14 @@ class PassportListApi(Resource):
         data = request.get_json()
         if not data:
             return jsonify(message="Fill the data", status=400)
+        try:
+            PassportSchema().load(data)
+        except ValidationError as err:
+            return jsonify(message=err.messages, status=400)
         series = data["series"]
         number = data["number"]
         published_by = data["published_by"]
         date_of_birth = data["date_of_birth"]
-        try:
-            PassportSchema().load({"series": series,
-                                   "number": number,
-                                   "published_by": published_by,
-                                   "date_of_birth": date_of_birth})
-        except ValidationError as err:
-            return jsonify(message=err.messages, status=400)
         if Passport.query.filter_by(number=number).first() is not None:
             return jsonify(message="Passport with this number is already exist", status=409)
         try:
@@ -72,8 +69,7 @@ class PassportApi(Resource):
         :return: dict of passport`s data
         """
         try:
-            passport = passport_service.read_passport_by_id(id)
-            if passport:
+            if passport_service.read_passport_by_id(id):
                 passport_data = passport.to_dict()
                 return jsonify(passport_data=passport_data, status=200)
             else:
@@ -85,7 +81,20 @@ class PassportApi(Resource):
     @staticmethod
     def put(id):
         """
-        Method overrides put method of Resource and works on put method, editing passport
+        Method overrides put method of Resource and works on put method, editing passport by id
+        (works as patch, without overwriting old data as Null)
         :return: response in json format or error messages
         """
-        pass
+        data = request.json
+        try:
+            PassportSchema().load(data, partial=True)
+        except ValidationError as err:
+            return jsonify(message=err.messages, status=400)
+        try:
+            if passport_service.read_passport_by_id(id):
+                passport_service.update_passport(id, data)
+                return jsonify(message="Passport was updated successfully", status=200)
+            return jsonify(message="Not valid passport id", status=400)
+        except:
+            logger.error(f"Failed to update passport.")
+            return jsonify(message=f"Failed to update passport", status=400)

@@ -39,3 +39,4 @@ class PassportSchema(Schema):
     number = fields.Integer(required=True)
     published_by = fields.Integer(required=True)
     date_of_birth = fields.Date(required=True)
+

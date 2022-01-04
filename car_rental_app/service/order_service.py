@@ -60,6 +60,21 @@ def read_order_by_id(id):
     return None
 
 
+def update_order(id, data):
+    """
+    Function updating existing order
+    :param id: order id
+    :param data: valid data to change
+    :return: None
+    """
+    try:
+        db.session.query(Order).filter_by(id=id).update(data)
+        db.session.commit()
+    except:
+        logger.warning("Can`t update a certain order")
+    return None
+
+
 def delete_order(id):
     """
     Delete a specific order

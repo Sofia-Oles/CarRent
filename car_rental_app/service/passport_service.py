@@ -41,27 +41,15 @@ def read_passport_by_id(id):
     return None
 
 
-def update_passport(id, series=None, number=None, published_by=None, date_of_birth=None):
+def update_passport(id, data):
     """
-    Update an existing passport without overwriting the unspecified elements as Null
-    :param id: id
-    :param series: passport series
-    :param number: passport number
-    :param published_by: number of department, which published passport
-    :param date_of_birth: user`s date of birth
+    Update an existing passport
+    :param id: passport`s id
+    :param data: data to change
     :return: None
     """
     try:
-        passport = Passport.query.get(id)
-        if series:
-            passport.series = series
-        elif number:
-            passport.number = number
-        elif published_by:
-            passport.published_by = published_by
-        elif date_of_birth:
-            passport.date_of_birth = date_of_birth
-        db.session.add(passport)
+        db.session.query(Passport).filter_by(id=id).update(data)
         db.session.commit()
     except:
         logger.warning("Can`t update a certain passport")

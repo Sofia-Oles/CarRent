@@ -39,19 +39,15 @@ class CarListAPI(Resource):
         data = request.get_json()
         if not data:
             return jsonify(message="Fill the data", status=400)
+        try:
+            CarSchema().load(data)
+        except ValidationError as err:
+            return jsonify(message=err.messages, status=400)
         name = data["name"]
         model = data["model"]
         year = data["year"]
         price_per_day = data["price_per_day"]
         people_count = data["people_count"]
-        try:
-            CarSchema().load({"name": name,
-                              "model": model,
-                              "year": year,
-                              "price_per_day": price_per_day,
-                              "people_count": people_count})
-        except ValidationError as err:
-            return jsonify(message=err.messages, status=400)
         try:
             car_service.create_car(name=name,
                                    model=model,
@@ -90,21 +86,20 @@ class CarApi(Resource):
     @staticmethod
     def put(id):
         """
-        Method overrides put method of Resource and works on put method, editing car
+        Method overrides put method of Resource and works on put method, editing car by id
+        (works as patch, without overwriting old data as Null)
         :return: response in json format or error messages
         """
         data = request.json
-        # check from front
-        for key, value in list(data.items()):
-            if value == "":
-                data.pop(key)
         try:
-            CarSchema().load(data)
+            CarSchema().load(data, partial=True)
         except ValidationError as err:
             return jsonify(message=err.messages, status=400)
         try:
-            car_service.update_car(id, data)
-            return jsonify(message="Car was updated successfully", status=200)
+            if car_service.read_car_by_id(id):
+                car_service.update_car(id, data)
+                return jsonify(message="Car was updated successfully", status=200)
+            return jsonify(message="Not valid car id", status=400)
         except:
             logger.error(f"Failed to update car.")
             return jsonify(message=f"Failed to update car", status=400)
@@ -116,8 +111,10 @@ class CarApi(Resource):
          :return: response in json format or error messages
         """
         try:
-            car_service.delete_car(id)
-            return jsonify(message="Car was deleted successfully", status=200)
+            if car_service.read_car_by_id(id):
+                car_service.delete_car(id)
+                return jsonify(message="Car was deleted successfully", status=200)
+            return jsonify(message="Not valid car id", status=400)
         except:
             logger.error(f"Failed to delete car by id")
             return jsonify(message="No such car", status=400)

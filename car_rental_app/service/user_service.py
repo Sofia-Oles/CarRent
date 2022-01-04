@@ -54,47 +54,35 @@ def read_user_by_id(id):
     return None
 
 
-def update_user(id, login=None, name=None, surname=None, password=None):
+def update_user(id, data):
     """
-    Function updating existing user without overwriting the unspecified elements as Null
-    :param id: user`s login
-    :param login: user`s login
-    :param name: user`s name
-    :param surname: user`s surname
-    :param password: user`s password
+    Function updating existing user
+    :param id: user id
+    :param data: data to change
     :return: None
     """
     try:
-        user = User.query.get(id)
-        if login:
-            user.login = login
-        elif name:
-            user.name = name
-        elif surname:
-            user.surname = surname
-        elif password:
-            user.password = password
-        db.session.add(user)
+        db.session.query(User).filter_by(id=id).update(data)
         db.session.commit()
     except:
         logger.warning("Can`t update a certain user")
     return None
 
 
-def update_user_balance(id, balance=None):
-    """
-    Replenish a specific user balance
-    :param id: user`s id
-    :param balance: user`s new balance
-    :return: None
-    """
-    try:
-        user = User.query.get(id)
-        if balance:
-            user.balance = balance
-    except:
-        logger.warning("Can`t update a user`s balance")
-    return None
+# def update_user_balance(id, balance=None):
+#     """
+#     Replenish a specific user balance
+#     :param id: user`s id
+#     :param balance: user`s new balance
+#     :return: None
+#     """
+#     try:
+#         user = User.query.get(id)
+#         if balance:
+#             user.balance = balance
+#     except:
+#         logger.warning("Can`t update a user`s balance")
+#     return None
 
 
 def delete_user(id):
