@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Order Page
+{% endblock %}
+
+{% block content %}
+    <div>
+        {% if car %}
+            <p style="text-align: center">Your order is {{ car.name }} {{ car.model }} with id = {{ car.id }}</p>
+            <p style="text-align: center"> Car price per day = {{ car.price_per_day }}$</p>
+            <p style="text-align: center">Select start & end dates below</p>
+        {% endif %}
+    </div>
+    {% with messages=get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class='alert alert-{{ category }} text-center alert-dismissible fade show m-auto'>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+    <div class="d-flex justify-content-center">
+        <form method="POST" class="form-register" style="color:white; justify-content: center">
+            <br>
+            {{ form.csrf_token() }}
+
+            {{ form.start_date(class="form-control", placeholder="Start date") }}
+            {{ form.start_date.label() }}
+            {{ form.end_date(class="form-control", placeholder="End date") }}
+            {{ form.end_date.label() }}
+
+            <br>
+            <div style="margin-bottom: 4vh">
+                {{ form.submit(class="btn btn-lg btn-block btn-dark") }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

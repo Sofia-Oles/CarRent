@@ -35,16 +35,25 @@ $(function() {
         minDate: "01/15/2022",
         opens: 'right'
     }, function(start, end, label) {
-      document.getElementById("totalPrice").innerHTML = `${(+end.format('D') - +start.format('D'))*30}$`;
+      document.getElementById("totalPrice").innerHTML = `${(+end.format('D') - +start.format('D'))}$`;
     });
 });
 
 let confirm = document.getElementById("confirm")
+
 
 confirm.onclick = function(){
     let totalPrice = document.getElementById("totalPrice").textContent;
     let temp = totalPrice.substring(0, totalPrice.length - 1);
     document.getElementById("balance").innerHTML = balance - +temp + "$";
     modal.style.display = "none";
+   $.ajax({
+              type: "POST",
+              contentType: "application/json;charset=utf-8",
+              url: "/order",
+              traditional: "true",
+              data: JSON.stringify({temp}),
+              dataType: "json"
+              });
 }
 

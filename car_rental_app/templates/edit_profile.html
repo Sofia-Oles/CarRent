@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block content %}
+    {% with messages=get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} text-center alert-dismissible fade show m-auto">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+    <div class="d-flex justify-content-center" style="height: 60vh">
+        <form method="POST" style="color:white; justify-content: center">
+            <br>
+            {{ form.csrf_token() }}
+            <strong class="form-text text-muted">
+                You can edit both all fields and only several fields
+            </strong>
+            {{ form.name.label() }}
+            {{ form.name(class="form-control", id="exampleInputEmail1", placeholder="New name") }}
+            {{ form.surname.label() }}
+            {{ form.surname(class="form-control", placeholder="New surname ") }}
+            {{ form.password.label() }}
+            {{ form.password(class="form-control", placeholder="New password") }}
+            <br>
+            {{ form.submit(class="btn btn-lg btn-block btn-dark") }}
+            <a class="btn btn-sm btn-secondary" style="margin-top: 1vh" href="{{ url_for("public.profile_page") }}">Back to profile</a>
+        </form>
+    </div>
+{% endblock %}

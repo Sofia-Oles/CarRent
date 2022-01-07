@@ -69,20 +69,20 @@ def update_user(id, data):
     return None
 
 
-# def update_user_balance(id, balance=None):
-#     """
-#     Replenish a specific user balance
-#     :param id: user`s id
-#     :param balance: user`s new balance
-#     :return: None
-#     """
-#     try:
-#         user = User.query.get(id)
-#         if balance:
-#             user.balance = balance
-#     except:
-#         logger.warning("Can`t update a user`s balance")
-#     return None
+def update_user_balance(id, balance):
+    """
+    Replenish a specific user balance
+    :param id: user`s id
+    :param balance: user`s new balance
+    :return: None
+    """
+    try:
+        user = User.query.get(id)
+        user.balance = balance
+        db.session.commit()
+    except:
+        logger.warning("Can`t update a user`s balance")
+    return None
 
 
 def delete_user(id):
@@ -93,7 +93,7 @@ def delete_user(id):
     """
     try:
         user = User.query.get(id)
-        passport = read_passport_by_id(user.id)
+        passport = read_passport_by_id(user.passport_id)
         db.session.delete(passport)
         db.session.delete(user)
         db.session.commit()

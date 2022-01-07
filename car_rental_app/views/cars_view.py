@@ -4,7 +4,7 @@ from . import public_blueprint
 from ..service import car_service
 
 
-@public_blueprint.route("/cars", methods=['GET'])
+@public_blueprint.route("/cars", methods=["GET", "POST"])
 def show_cars():
     """
     Render the cars page template
@@ -13,10 +13,10 @@ def show_cars():
     return render_template("cars.html", cars=cars)
 
 
-@public_blueprint.route('/cars/add', methods=['GET', 'POST'])
+@public_blueprint.route("/cars/add", methods=["GET", "POST"])
 def add_car():
     """
     Form to add or edit car
     """
-    return redirect(url_for('public.show_cars'))  # blueprint_name.func_name
+    return redirect(url_for("public.show_cars"))  # blueprint_name.func_name
 

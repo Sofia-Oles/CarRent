@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Profile page
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-center">
+        {% if current_user.is_authenticated %}
+            <div style="justify-content: center; height: 70vh">
+                <p style="font-size: 3vh"><strong>Profile Information</strong></p>
+                <p>Login: {{ current_user.login }}</p>
+                <p>Name: {{ current_user.name }}</p>
+                <p>Surname: {{ current_user.surname }}</p>
+                <p>Balance: {{ current_user.balance }}</p>
+                <p>Passport Series: {{ current_user.passport.series }}</p>
+                <p>Passport Number: {{ current_user.passport.number }}</p>
+                <p>Passport Series: {{ current_user.passport.series }}</p>
+                <p>Passport Published by: {{ current_user.passport.published_by }}</p>
+                <p>Passport Birth Date: {{ current_user.passport.date_of_birth }}</p>
+                <a class="btn btn-sm btn-secondary" href="{{ url_for('public.register_page') }}">Edit passport info</a>
+                <a class="btn btn-sm btn-secondary" href="{{ url_for('public.edit_user') }}">Edit personal info</a>
+                <a class="btn btn-sm btn-secondary" href="{{ url_for('public.delete_user') }}">Delete profile</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

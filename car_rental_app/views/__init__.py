@@ -12,6 +12,8 @@ public_blueprint = Blueprint("public", __name__)
 
 from . import auth_view
 from . import cars_view
+from . import user_view
+from . import order_view
 
 
 @public_blueprint.route("/")

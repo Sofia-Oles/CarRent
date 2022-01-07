@@ -70,7 +70,7 @@ class PassportApi(Resource):
         """
         try:
             if passport_service.read_passport_by_id(id):
-                passport_data = passport.to_dict()
+                passport_data = passport_service.read_passport_by_id(id).to_dict()
                 return jsonify(passport_data=passport_data, status=200)
             else:
                 return jsonify(message=f"No such passport in db", status=404)
