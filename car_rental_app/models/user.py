@@ -1,8 +1,10 @@
-from car_rental_app import db
+from flask_login import UserMixin
+
+from car_rental_app import db, login_manager
 from marshmallow import Schema, fields, validate
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
 
     __tablename__ = "user"
 
@@ -43,3 +45,12 @@ class UserSchema(Schema):
     surname = fields.String(required=True)
     password = fields.String(validate=validate.Length(min=4), required=True)
     password2 = fields.String(validate=validate.Length(min=4), required=True)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    """
+    :param user_id:
+    :return: user obj
+    """
+    return User.query.get(int(user_id))

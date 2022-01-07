@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Login Page
+{% endblock %}
+
+{% block content %}
+    {% with messages=get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class='alert alert-{{ category }} text-center alert-dismissible fade show m-auto'>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+    <div class="d-flex justify-content-center">
+        <form method="POST" class="form-signin" style="color:white; justify-content: center">
+            <br>
+            {{ form.csrf_token() }}
+            {{ form.email.label() }}
+            {{ form.email(class="form-control", placeholder="Email") }}
+            {{ form.password.label() }}
+            {{ form.password(class="form-control", placeholder="Password") }}
+            <br>
+            <div style="margin: 1vh">
+                <p style="color: black">Don`t have an account?</p>
+                <a class="btn btn-sm btn-secondary" href="{{ url_for('public.register_page') }}">Sign up</a>
+            </div>
+            <div style="margin-bottom: 4vh">
+                {{ form.submit(class="btn btn-lg btn-block btn-dark") }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

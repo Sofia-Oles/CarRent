@@ -1,3 +1,4 @@
 .idea
 .VENV
 __pycache__/
+.VENV/node_modules

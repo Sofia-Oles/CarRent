@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Mohave:wght@300;500;600&display=swap');
+
+.container{
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+header{
+    display: flex;
+}
+
+.balance, .balance-value{
+    font-family: 'Mohave', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.grid-container{
+    display: grid;
+    grid-template: repeat(3, 390px) / repeat(3, 300px);
+    gap: 20px;
+}
+
+.card-title{
+    margin: 0 auto;
+    padding-bottom: 10px;
+    font-family: 'Mohave', sans-serif;
+    font-weight: 600;
+}
+
+.card{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 15px;
+    align-items: center
+}
+
+.card-descr{
+    padding-top: 5px;
+    display: grid;
+    grid-template: repeat(4, 30px) / repeat(2, 130px);
+    align-items: center;
+    justify-content: center;
+}
+
+.card-photo{
+    background-size: cover;
+    width: 262px;
+    box-shadow: 0 0 8px 8px white inset;
+}
+
+.card-order-btn{
+    margin-top: 1px;
+    padding: 5px;
+    width: 100%;
+    font-family: 'Mohave', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    background: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.card-order-btn:hover {
+    background: gray;
+    transition: 0.3s;
+}
+
+.card-descr-cap, .card-descr-cap-value, .card-descr-price, .card-descr-price-value, .card-descr-fuel, .card-descr-fuel-value, .card-descr-year, .card-descr-year-value{
+    font-size: 18px;
+    font-family: 'Mohave', sans-serif;
+    font-weight: 300;
+}
+
+.card-descr-cap-value, .card-descr-price-value, .card-descr-fuel-value, .card-descr-year-value{
+    text-align: end;
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /*overflow: none; */
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 300px;
+    height: 220px;
+    font-size: 18px;
+    font-family: 'Mohave', sans-serif;
+    font-weight: 300;
+  }
+
+  .close {
+    color: black;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .modal-descr{
+      margin-bottom: -10px;
+      display: flex;
+  }
+
+@media ( max-width: 1200px ){
+    .container{
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .grid-container{
+        display: grid;
+        grid-template: repeat(2, 390px) / repeat(2, 300px);
+        gap: 20px;
+    }
+}
+
+@media ( max-width: 991px ){
+
+}
+
+@media ( max-width: 767px ){
+    .container{
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .grid-container{
+        display: grid;
+        grid-template: repeat(1, 390px) / repeat(1, 300px);
+        gap: 20px;
+    }
+}
+
+@media ( max-width: 575px ){
+
+}

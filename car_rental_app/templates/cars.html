@@ -1,19 +1,65 @@
-{%extends 'base.html' %}
+{% extends 'base.html' %}
 
-{%block title%}
-    Cars
-{%endblock%}
+{% block title %}
+    Home page
+{% endblock %}
 
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rent-car</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    </head>
 
-{#{%block content_title%}#}
-{#    Cars page#}
-{#{%endblock%}#}
+    <body>
+    <div class="container">
+        <header class="header">
+            <p class="balance">Balance:
+            <p class="balance-value" id="balance"></p></p>
+        </header>
 
-{%block content%}
-    Different cars here
-    {% for car in cars %}
-    <p>
-    car id = {{ car.id }}
-    </p>
-    {% endfor %}
-{%endblock%}
+        <div data-container class="grid-container">
+            {% for car in cars %}
+                <div class="card">
+                    <h3 align="center" class="card-title">{{car.name}}</h3>
+                        <img class="card-photo" src="https://build.ford.com/dig/Ford/Mustang/2021/HD-TILE/Image%5B%7CFord%7CMustang%7C2021%7C1%7C1.%7C600A.P8R..G1..88W.LESS.856.MC1.RWD.990.90N.643.~VIRTUALPKGPART_AACAA_88.~VIRTUALPKGPART_D17AA_94.~VIRTUALPKGPART_EGAHD_98.~VIRTUALPKGPART_EGAJB_99.~VIRTUALPKGPART_EGJAH_100.~VIRTUALPKGPART_YE3AA_104.~VIRTUALPKGPART_BPFAQ_136.~VIRTUALPKGPART_D2GCR_137.SSR.SY3.L59.SED.574.12U.13Q.PDS.96B.45T.19B.DIS.50B.14A.AML.457.~VIRTUALPKGPART_YD7AA_46.67G.58E.CLO.T3D.44E.MAC.COU.891.2021%20P8R%20FORD.%5D/EXT/1/vehicle.png" alt="car">
+                        <div class="card-descr">
+                            <p class="card-descr-year">Model:</p>
+                            <p class="card-descr-year-value">{{car.model}}</p>
+                            <p class="card-descr-year">Production year:</p>
+                            <p class="card-descr-year-value">{{car.year}}</p>
+                            <p class="card-descr-cap">Capacity:</p>
+                            <p class="card-descr-cap-value">{{car.people_count}} persons</p>
+                            <p class="card-descr-price">Price:</p>
+                            <p class="card-descr-price-value">{{car.price_per_day}}$/day</p>
+                        </div>
+                        <button data-modal class="card-order-btn">Order NOW!</button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span data-close class="close">&times;</span>
+                <p>How many days you want to rent a car?</p>
+                <input type="text" name="daterange" value="01/01/2018 - 01/15/2018"/>
+                <div class="modal-descr">
+                    <p class="modal-descr-price">Total price is: </p>
+                    <p class="modal-descr-prive-value" id="totalPrice"></p>
+                </div>
+                <button class="card-order-btn" id="confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </body>
+    </html>
+{% endblock %}

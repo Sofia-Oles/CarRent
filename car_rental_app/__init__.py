@@ -1,16 +1,15 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt, check_password_hash
+from flask_bcrypt import Bcrypt
 from flask_marshmallow import Marshmallow
-# from flask_login import LoginManager
+from flask_login import LoginManager
 from flask_migrate import Migrate
-from flask_restful import Api
 from config import Configuration
 
 
 db = SQLAlchemy()
 ma = Marshmallow()
-# login_manager = LoginManager()
+login_manager = LoginManager()
 bcrypt = Bcrypt()
 migrate = Migrate()
 
@@ -31,7 +30,7 @@ def create_app():
     # with app.app_context():
     #     db.create_all()
 
-    # login_manager.init_app(app)
+    login_manager.init_app(app)
 
     from car_rental_app import models
     migrate.init_app(app, db)

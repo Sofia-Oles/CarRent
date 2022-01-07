@@ -1,36 +1,22 @@
-from flask import render_template, url_for, request, jsonify, redirect
-from flask_restful.inputs import date
-from flask import Blueprint
+from flask import render_template, url_for, redirect
 
-from car_rental_app.models.passport import Passport
-from car_rental_app.service import passport_service
-
-public_blueprint = Blueprint("public", __name__)
+from . import public_blueprint
+from ..service import car_service
 
 
-@public_blueprint.route("/")
-def home():
-    """
-    Render the home page template for public users
-    """
-    return render_template("index.html")
-
-
-@public_blueprint.route("/all")
+@public_blueprint.route("/cars", methods=['GET'])
 def show_cars():
     """
     Render the cars page template
     """
-    return render_template("cars.html")
+    cars = car_service.read_all_cars()
+    return render_template("cars.html", cars=cars)
 
-#
-# @public_blueprint.route("/a", methods=['POST', 'GET'])
-# def tr():
-#     """
-#     Render the cars page template
-#     """
-#     data = request.get_json()
-#     id = data.get('id')
-#     passport = Passport.query.get_or_404(id)
-#     print(passport)
-#     return jsonify(passport)
+
+@public_blueprint.route('/cars/add', methods=['GET', 'POST'])
+def add_car():
+    """
+    Form to add or edit car
+    """
+    return redirect(url_for('public.show_cars'))  # blueprint_name.func_name
+

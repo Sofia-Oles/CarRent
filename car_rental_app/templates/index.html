@@ -6,9 +6,17 @@
 
 
 {%block content_title%}
-    Index page
+    <p>Happy to see you here!</p>
 {%endblock%}
 
 {%block content%}
-Happy to see you here!
+    <div style="font-size: 3vh; height: 70vh">
+    <p> Going travelling and need a car?
+            Your car broken down?
+            Looking for a quick weekend getaway? Or just need a car to get around?</p>
+        <p>CarRent is the perfect option for you. With the CarRent, the ideal car for you is in the palm of your hands!</p>
+    <a href="{{ url_for('public.show_cars') }}">Cars Page</a>
+    <a href="{{ url_for('public.register_page') }}">Register Page</a>
+    <a href="{{ url_for('public.login_page') }}">Login Page</a>
+    </div>
 {%endblock%}
