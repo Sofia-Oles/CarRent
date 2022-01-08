@@ -60,6 +60,20 @@ def read_order_by_id(id):
     return None
 
 
+def read_all_orders_by_user_id(id):
+    """
+    Get list of orders by user id
+    :param id: user`s id
+    :return: list of orders
+    """
+    try:
+        orders = Order.query.filter_by(user_id=id).all()
+        return orders
+    except:
+        logger.warning("Can`t get list of orders by user from db")
+    return None
+
+
 def update_order(id, data):
     """
     Function updating existing order

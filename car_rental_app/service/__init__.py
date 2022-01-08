@@ -7,3 +7,4 @@ from . import car_service
 from . import passport_service
 from . import user_service
 from . import order_service
+from . import admin_service

@@ -16,17 +16,32 @@
         <form method="POST" class="form-register" style="color:white; justify-content: center">
             <br>
             {{ form.csrf_token() }}
-
-            {{ form.name(class="form-control", placeholder="Car name") }}
-            {{ form.name.label() }}
-            {{ form.model(class="form-control", placeholder="Car model") }}
-            {{ form.model.label() }}
-            {{ form.year(class="form-control", placeholder="Production year") }}
-            {{ form.year.label() }}
-            {{ form.price_per_day(class="form-control", placeholder="Price per day") }}
-            {{ form.price_per_day.label() }}
-            {{ form.people_count(class="form-control", placeholder="Capacity of passengers") }}
-            {{ form.people_count.label() }}
+            {% if add_Car %}
+                {{ form.name(class="form-control", placeholder="Car name") }}
+                {{ form.name.label() }}
+                {{ form.model(class="form-control", placeholder="Car model") }}
+                {{ form.model.label() }}
+                {{ form.year(class="form-control", placeholder="Production year") }}
+                {{ form.year.label() }}
+                {{ form.price_per_day(class="form-control", placeholder="Price per day") }}
+                {{ form.price_per_day.label() }}
+                {{ form.people_count(class="form-control", placeholder="Capacity of passengers") }}
+                {{ form.people_count.label() }}
+            {% else %}
+                <strong class="form-text text-muted" style="margin-bottom: 1vh">
+                    You can edit both all fields and only several fields of CAR
+                </strong>
+                {{ form.name(class="form-control", placeholder="New car name") }}
+                {{ form.name.label() }}
+                {{ form.model(class="form-control", placeholder="New car model") }}
+                {{ form.model.label() }}
+                {{ form.year(class="form-control", placeholder="New production year") }}
+                {{ form.year.label() }}
+                {{ form.price_per_day(class="form-control", placeholder="New price per day") }}
+                {{ form.price_per_day.label() }}
+                {{ form.people_count(class="form-control", placeholder="New capacity of passengers") }}
+                {{ form.people_count.label() }}
+            {% endif %}
             <br>
             <div style="margin-bottom: 4vh">
                 {{ form.submit(class="btn btn-lg btn-block btn-dark") }}

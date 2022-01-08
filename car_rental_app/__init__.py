@@ -22,9 +22,6 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Configuration)
 
-    from .views import public_blueprint
-    app.register_blueprint(public_blueprint)
-
     db.init_app(app)
     bcrypt.init_app(app)
     # with app.app_context():
@@ -35,8 +32,9 @@ def create_app():
     from car_rental_app import models
     migrate.init_app(app, db)
 
-    from .views import public_blueprint
+    from .views import public_blueprint, admin_blueprint
     app.register_blueprint(public_blueprint)
+    app.register_blueprint(admin_blueprint)
 
     from .rest import r_api
     r_api.init_app(app) # Calling Api.init_app() is not required here because registering the blueprint with the app takes care of setting up the routing for the application

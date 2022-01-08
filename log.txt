@@ -3,3 +3,4 @@
 192.168.0.107 - - [08/Jan/2022 14:07:52] - - WARNING - - [passport_service] "Can`t update a certain passport"
 192.168.0.107 - - [08/Jan/2022 14:08:58] - - ERROR - - [user_view] "Failed to hash password!"
 192.168.0.107 - - [08/Jan/2022 14:09:37] - - WARNING - - [passport_service] "Can`t update a certain passport"
+192.168.0.107 - - [08/Jan/2022 22:42:04] - - ERROR - - [user_view] "Failed to hash password!"

@@ -46,8 +46,8 @@ class OrderListAPI(Resource):
 
         # parse to format
         try:
-            start_date = datetime.fromisoformat(start_date).replace(hour=00, minute=00)
-            end_date = datetime.fromisoformat(end_date).replace(hour=00, minute=00)
+            start_date = datetime.fromisoformat(start_date).replace(hour=9, minute=00)
+            end_date = datetime.fromisoformat(end_date).replace(hour=9, minute=00)
         except Exception as e:
             logger.error(f"Failed to create order, {e}")
             return jsonify(message=f"{e}", status=400)

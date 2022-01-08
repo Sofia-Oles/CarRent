@@ -12,17 +12,25 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href=" {{ url_for('public.home') }} ">CarRent</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <a class="navbar-brand" href="#">CarRent</a>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href=" {{ url_for('public.show_cars') }} "> Cars <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="#">Sign in</a>
-            <a class="nav-item nav-link" href="#">Sing up</a>
-            <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('public.show_cars') }} "> Cars <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="{{ url_for('public.show_user_orders') }}">My orders</a>
+                <a class="nav-item nav-link" href="{{ url_for('public.edit_balance') }}" aria-disabled="true">Balance: {{ current_user.balance }}$</a>
+                <a class="nav-item nav-link" href="{{ url_for('public.profile_page') }}">Profile</a>
+                <a class="nav-item nav-link" href="{{ url_for('public.logout_page') }}">Logout</a>
+            {% elif admin %}
+                <a class="nav-item nav-link" href="{{ url_for('admin.show_cars') }} "> Cars <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="{{ url_for('admin.show_all_users') }}">Clients</a>
+                <a class="nav-item nav-link" href="{{ url_for('admin.show_orders') }}">Orders</a>
+                <a class="nav-item nav-link disabled" href="#" aria-disabled="true">Balance: {{ balance }}$</a>
+            {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('public.login_page') }}">Sign in</a>
+                <a class="nav-item nav-link" href="{{ url_for('public.register_page') }}">Sing up</a>
+            {% endif%}
+
         </div>
     </div>
 </nav>
