@@ -22,7 +22,7 @@ class RegisterForm(FlaskForm):
     series = StringField(validators=[Length(min=1, max=2), DataRequired()])
     number = IntegerField(validators=[DataRequired()])
     published_by = IntegerField(validators=[DataRequired()])
-    birth_date = DateField(validators=[InputRequired()])
+    date_of_birth = DateField(validators=[InputRequired()])
 
     email = StringField(validators=[DataRequired(), Email()])
     name = StringField(validators=[DataRequired()])
@@ -64,7 +64,7 @@ def register_page():
         new_passport = passport_service.create_passport(series=form.series.data,
                                                         number=form.number.data,
                                                         published_by=form.published_by.data,
-                                                        date_of_birth=form.birth_date.data)
+                                                        date_of_birth=form.date_of_birth.data)
         if new_passport:
             new_user = user_service.create_user(
                 login=form.email.data,
@@ -74,7 +74,7 @@ def register_page():
                 password=bcrypt.generate_password_hash(form.password.data))
 
             login_user(new_user)
-            flash(f'Account created successfully! You are now logged in '
+            flash(f'Account was created successfully! You are now logged in '
                   f'as {new_user.login}', category="success")
 
             # redirect to the cars page

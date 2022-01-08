@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Add Car
+{% endblock %}
+
+{% block content %}
+    {% with messages=get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class='alert alert-{{ category }} text-center alert-dismissible fade show m-auto'>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+    <div class="d-flex justify-content-center">
+        <form method="POST" class="form-register" style="color:white; justify-content: center">
+            <br>
+            {{ form.csrf_token() }}
+
+            {{ form.name(class="form-control", placeholder="Car name") }}
+            {{ form.name.label() }}
+            {{ form.model(class="form-control", placeholder="Car model") }}
+            {{ form.model.label() }}
+            {{ form.year(class="form-control", placeholder="Production year") }}
+            {{ form.year.label() }}
+            {{ form.price_per_day(class="form-control", placeholder="Price per day") }}
+            {{ form.price_per_day.label() }}
+            {{ form.people_count(class="form-control", placeholder="Capacity of passengers") }}
+            {{ form.people_count.label() }}
+            <br>
+            <div style="margin-bottom: 4vh">
+                {{ form.submit(class="btn btn-lg btn-block btn-dark") }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

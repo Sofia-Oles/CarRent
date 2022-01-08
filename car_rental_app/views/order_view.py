@@ -6,21 +6,17 @@ from flask import render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, DateField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, InputRequired, ValidationError
+from wtforms.validators import InputRequired
 
-from log import logger
-from .. import bcrypt
 from . import public_blueprint
 
-from ..models.passport import Passport
-from ..models.user import User
-from ..service import user_service, passport_service, car_service, order_service
+from ..service import user_service, car_service, order_service
 
 
 class OrderForm(FlaskForm):
     start_date = DateField(validators=[InputRequired()])
     end_date = DateField(validators=[InputRequired()])
-    submit = SubmitField(label="Order!")
+    submit = SubmitField(label="Pay!")
 
     @staticmethod
     def validate_date(form):
@@ -45,7 +41,9 @@ def order_page(car_id):
         orders = order_service.retrieve_busy_dates(car_id, start_date, end_date)
         # enough balance
         user = user_service.read_user_by_id(current_user.id)
-        if user.balance <= ((end_date - start_date).days * car.price_per_day):
+        # price to pay
+        price_to_pay = ((end_date - start_date).days * car.price_per_day)
+        if user.balance <= price_to_pay:
             flash("Balance too low! You can retrieve it", category="danger")
             # redirect to your retrieving page
             return redirect(url_for("public.edit_balance"))
@@ -54,7 +52,8 @@ def order_page(car_id):
                                        car_id=car_id,
                                        start_date=start_date,
                                        end_date=end_date,
-                                       price=(end_date - start_date).days * car.price_per_day)
+                                       price=price_to_pay)
+            user_service.update_user_balance(user.id, (user.balance-price_to_pay))
             flash("The order was created!", category="success")
             # redirect to your orders page
             return redirect(url_for("public.show_cars"))

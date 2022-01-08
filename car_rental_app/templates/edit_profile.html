@@ -12,22 +12,34 @@
             </div>
         {% endfor %}
     {% endwith %}
-    <div class="d-flex justify-content-center" style="height: 60vh">
+    <div class="d-flex justify-content-center" style="height: 70vh">
         <form method="POST" style="color:white; justify-content: center">
             <br>
             {{ form.csrf_token() }}
-            <strong class="form-text text-muted">
+            <strong class="form-text text-muted" style="margin-bottom: 1vh">
                 You can edit both all fields and only several fields
             </strong>
-            {{ form.name.label() }}
-            {{ form.name(class="form-control", id="exampleInputEmail1", placeholder="New name") }}
-            {{ form.surname.label() }}
-            {{ form.surname(class="form-control", placeholder="New surname ") }}
-            {{ form.password.label() }}
-            {{ form.password(class="form-control", placeholder="New password") }}
+            {% if edit_profile %}
+                {{ form.name.label() }}
+                {{ form.name(class="form-control", id="exampleInputEmail1", placeholder="New name") }}
+                {{ form.surname.label() }}
+                {{ form.surname(class="form-control", placeholder="New surname ") }}
+                {{ form.password.label() }}
+                {{ form.password(class="form-control", placeholder="New password") }}
+            {% else %}
+                {{ form.series(class="form-control", placeholder="New passport series") }}
+                {{ form.series.label() }}
+                {{ form.number(class="form-control", placeholder="New passport number") }}
+                {{ form.number.label() }}
+                {{ form.published_by(class="form-control", placeholder="New published by") }}
+                {{ form.published_by.label() }}
+                {{ form.date_of_birth(class="form-control", placeholder="New birth date") }}
+                {{ form.date_of_birth.label() }}
+            {% endif %}
             <br>
             {{ form.submit(class="btn btn-lg btn-block btn-dark") }}
-            <a class="btn btn-sm btn-secondary" style="margin-top: 1vh" href="{{ url_for("public.profile_page") }}">Back to profile</a>
+            <a class="btn btn-sm btn-secondary" style="margin-top: 1vh" href="{{ url_for("public.profile_page") }}">Back
+                to profile</a>
         </form>
     </div>
 {% endblock %}

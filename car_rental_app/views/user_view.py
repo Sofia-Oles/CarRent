@@ -2,15 +2,16 @@ from flask import render_template, url_for, redirect, flash
 from flask_wtf import FlaskForm
 from marshmallow import ValidationError
 from wtforms import PasswordField, StringField, SubmitField, DateField, IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, InputRequired, NumberRange
+from wtforms.validators import DataRequired, Email, EqualTo, Length, InputRequired, NumberRange, Optional
 
 from log import logger
 from . import public_blueprint
 from flask_login import logout_user, login_required, current_user
 
 from .. import bcrypt
+from ..models.passport import PassportSchema
 from ..models.user import UserSchema, User
-from ..service import user_service
+from ..service import user_service, passport_service
 from ..service.passport_service import read_passport_by_id
 
 
@@ -29,6 +30,17 @@ class BalanceForm(FlaskForm):
     submit = SubmitField(label="Save")
 
 
+class PassportForm(FlaskForm):
+    """
+    Form for users to edit passport
+    """
+    series = StringField(validators=[Length(min=1, max=2), Optional()])
+    number = IntegerField(validators=[Optional()])
+    published_by = IntegerField(validators=[Optional()])
+    date_of_birth = DateField(validators=[Optional()])
+    submit = SubmitField(label="Save")
+
+
 @public_blueprint.route("/profile", methods=["GET"])
 @login_required
 def profile_page():
@@ -44,6 +56,7 @@ def edit_user():
     """
     Edit user data
     """
+    edit_profile = True
     form = UserForm()
     data_to_validate = dict()
     # validate data from forms
@@ -51,10 +64,6 @@ def edit_user():
         for key, value in form.data.items():
             if value and key != "csrf_token" and key != "submit":
                 data_to_validate[key] = value
-        try:
-            UserSchema().load(data_to_validate, partial=True)
-        except ValidationError as err:
-            flash(f"{err.messages}")
         try:
             if data_to_validate["password"]:
                 data_to_validate["password"] = bcrypt.generate_password_hash(data_to_validate["password"])
@@ -67,7 +76,7 @@ def edit_user():
     if form.errors != {}:
         for err_msg in form.errors.values():
             flash(f"Error with creating account: {err_msg}", category="danger")
-    return render_template("edit_profile.html", form=form)
+    return render_template("edit_profile.html", form=form, edit_profile=edit_profile)
 
 
 @public_blueprint.route("/profile/delete", methods=["GET", "POST"])
@@ -100,4 +109,31 @@ def edit_balance():
         for err_msg in form.errors.values():
             flash(f"Error with creating account: {err_msg}", category="danger")
     return render_template("edit_balance.html", form=form)
+
+
+@public_blueprint.route("/passport/edit", methods=["GET", "POST"])
+@login_required
+def edit_passport():
+    """
+    Edit passport data
+    """
+    edit_profile = False
+    form = PassportForm()
+    data_to_validate = dict()
+    # validate data from forms
+    if form.validate_on_submit():
+        for key, value in form.data.items():
+            if value and key != "csrf_token" and key != "submit":
+                data_to_validate[key] = value
+        try:
+            passport_service.update_passport(current_user.passport_id, data_to_validate)
+            flash("You have successfully edited your passport info.", category="success")
+            # redirect to the profile page
+            return redirect(url_for("public.profile_page"))
+        except ValidationError as err:
+            flash(f"{err.messages}", category="danger")
+    if form.errors != {}:
+        for err_msg in form.errors.values():
+            flash(f"Error with updating passport data: {err_msg}", category="danger")
+    return render_template("edit_profile.html", form=form, edit_profile=edit_profile)
 
