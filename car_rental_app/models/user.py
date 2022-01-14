@@ -16,9 +16,7 @@ class User(UserMixin, db.Model):
     passport_id = db.Column(db.Integer, db.ForeignKey("passport.id"))
     password = db.Column(db.String(10), nullable=False)
 
-    user = db.relationship("Order",
-                           cascade="all,delete",
-                           backref="creator")
+    user = db.relationship("Order", cascade="all,delete", backref="creator")
 
     def to_dict(self):
         """
@@ -26,12 +24,12 @@ class User(UserMixin, db.Model):
         :return: the department in json format
         """
         return {
-             "id": self.id,
-             "login": self.login,
-             "name": self.name,
-             "surname": self.surname,
-             "balance": self.balance,
-             "passport_data": self.passport.to_dict()
+            "id": self.id,
+            "login": self.login,
+            "name": self.name,
+            "surname": self.surname,
+            "balance": self.balance,
+            "passport_data": self.passport.to_dict(),
         }
 
 
@@ -40,6 +38,7 @@ class UserSchema(Schema):
     Marshmallow.Schema makes it easy to check for the existence and data types of fields,
     which can be inserted to User table.
     """
+
     login = fields.Email(required=True)
     name = fields.String(required=True)
     surname = fields.String(required=True)

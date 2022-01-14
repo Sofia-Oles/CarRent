@@ -30,13 +30,16 @@ def create_app():
     login_manager.init_app(app)
 
     from car_rental_app import models
+
     migrate.init_app(app, db)
 
     from .views import public_blueprint, admin_blueprint
+
     app.register_blueprint(public_blueprint)
     app.register_blueprint(admin_blueprint)
 
     from .rest import r_api
+
     r_api.init_app(app)
 
     return app

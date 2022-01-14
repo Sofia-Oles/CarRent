@@ -12,9 +12,7 @@ class Car(db.Model):
     year = db.Column(db.Integer, nullable=False)
     price_per_day = db.Column(db.Integer, nullable=False)
     people_count = db.Column(db.Integer, nullable=False)
-    car = db.relationship("Order",
-                          cascade="all,delete",
-                          backref="car")
+    car = db.relationship("Order", cascade="all,delete", backref="car")
 
     def to_dict(self):
         """
@@ -27,7 +25,7 @@ class Car(db.Model):
             "model": self.model,
             "year": self.year,
             "price_per_day": self.price_per_day,
-            "people_count": self.people_count
+            "people_count": self.people_count,
         }
 
 
@@ -36,6 +34,7 @@ class CarSchema(Schema):
     Marshmallow.Schema makes it easy to check for the existence and data types of fields,
     which can be inserted to Car table.
     """
+
     name = fields.String(validate=validate.Length(min=5, max=50), required=True)
     model = fields.String(validate=validate.Length(min=1, max=50), required=True)
     year = fields.Integer(required=True)
