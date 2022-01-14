@@ -37,6 +37,6 @@ def create_app():
     app.register_blueprint(admin_blueprint)
 
     from .rest import r_api
-    r_api.init_app(app) # Calling Api.init_app() is not required here because registering the blueprint with the app takes care of setting up the routing for the application
+    r_api.init_app(app)
 
     return app
