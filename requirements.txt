@@ -1,7 +1,6 @@
 alembic==1.7.5
 aniso8601==9.0.1
 bcrypt==3.2.0
-car-rental-app==1.0
 cffi==1.15.0
 click==8.0.3
 colorama==0.4.4
