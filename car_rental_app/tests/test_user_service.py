@@ -10,7 +10,7 @@ class TestUserService(BaseTestCase):
 
     def test_get_all_departments(self):
         pass1 = car_service.create_car( name="Land Cruiser", model="DF6732", year=2017, price_per_day=100, people_count=6)
-        self.assertEqual(1, len(car_service.read_all_cars()))
+        self.assertEqual(5, len(car_service.read_all_cars()))
 
 
 if __name__ == "__main__":
