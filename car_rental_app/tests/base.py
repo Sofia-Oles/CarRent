@@ -2,12 +2,6 @@
 This module defines the BaseTestCase class
 """
 import unittest
-
-from car_rental_app.service import user_service
-
-from car_rental_app.models.user import User
-
-# from config import TestingConfig
 from car_rental_app import create_app, db
 
 

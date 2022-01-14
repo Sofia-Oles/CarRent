@@ -8,9 +8,11 @@ from car_rental_app.tests.base import BaseTestCase
 
 class TestUserService(BaseTestCase):
 
-    def test_get_all_departments(self):
-        pass1 = car_service.create_car( name="Land Cruiser", model="DF6732", year=2017, price_per_day=100, people_count=6)
-        self.assertEqual(1, len(car_service.read_all_cars()))
+    def test_read_all_users(self):
+        user = User(login="user222@gmail.com", name="Ivan", surname="Ivanov", passport_id=5, password="12345")
+        db.session.add(user)
+        db.session.commit()
+        self.assertEqual(1, len(user_service.read_all_users()))
 
 
 if __name__ == "__main__":
