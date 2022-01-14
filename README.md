@@ -1,4 +1,4 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/sofia-oles/final_project/badge)](https://www.codefactor.io/repository/github/sofia-oles/final_project)
+[![CodeFactor](https://www.codefactor.io/repository/github/sofia-oles/epam_final_project/badge)](https://www.codefactor.io/repository/github/sofia-oles/epam_final_project)
 
 # EPAM final project
 Author: Oleskevych Sofiia
