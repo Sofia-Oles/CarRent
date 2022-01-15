@@ -23,4 +23,4 @@ jobs:
         uses: wearerequired/lint-action@v1
         with:
           black: true
-          exclude: ^migrations/
+          force-exclude: ^.*\b(migrations)\b.*$
