@@ -28,20 +28,26 @@ def register_page():
         if user:
             flash("User with this login already exist!Try to sign in.")
             return render_template("login.html", form=form)
-        new_passport = passport_service.create_passport(series=form.series.data,
-                                                        number=form.number.data,
-                                                        published_by=form.published_by.data,
-                                                        date_of_birth=form.date_of_birth.data)
+        new_passport = passport_service.create_passport(
+            series=form.series.data,
+            number=form.number.data,
+            published_by=form.published_by.data,
+            date_of_birth=form.date_of_birth.data,
+        )
         if new_passport:
             new_user = user_service.create_user(
                 login=form.email.data,
                 name=form.name.data,
                 surname=form.surname.data,
                 passport=new_passport,
-                password=bcrypt.generate_password_hash(form.password.data))
+                password=bcrypt.generate_password_hash(form.password.data),
+            )
             login_user(new_user)
-            flash(f'Account was created successfully! You are now logged in '
-                  f'as {new_user.login}', category="success")
+            flash(
+                f"Account was created successfully! You are now logged in "
+                f"as {new_user.login}",
+                category="success",
+            )
             # redirect to the cars page
             return redirect(url_for("public.show_cars"))
         flash(f"Check your passport data!", category="danger")
@@ -64,7 +70,10 @@ def login_page():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-                flash(f"Success! You are logged in as: {user.login}", category="success")
+                flash(
+                    f"Success! You are logged in as: {user.login}",
+                    category="success",
+                )
                 # redirect to the cars page after login
                 return redirect(url_for("public.show_cars"))
             flash("Wrong password! Please try again!", category="danger")

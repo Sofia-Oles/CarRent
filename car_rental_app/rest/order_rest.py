@@ -99,8 +99,12 @@ class OrderApi(Resource):
         """
         data = request.json
         try:
-            data["start_date"] = datetime.fromisoformat(data["start_date"]).replace(hour=9, minute=00)
-            data["end_date"] = datetime.fromisoformat(data["end_date"]).replace(hour=9, minute=00)
+            data["start_date"] = datetime.fromisoformat(data["start_date"]).replace(
+                hour=9, minute=00
+            )
+            data["end_date"] = datetime.fromisoformat(data["end_date"]).replace(
+                hour=9, minute=00
+            )
         except Exception as e:
             logger.error(f"Failed to create order, {e}")
             return jsonify(message=f"No {e}", status=400)

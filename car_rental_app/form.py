@@ -9,7 +9,7 @@ from wtforms.validators import (
     Length,
     InputRequired,
     NumberRange,
-    Optional
+    Optional,
 )
 
 
@@ -60,7 +60,7 @@ class BalanceForm(FlaskForm):
     balance = IntegerField(
         validators=[
             DataRequired(),
-            NumberRange(min=50, message="Must enter a number greater than 50")
+            NumberRange(min=50, message="Must enter a number greater than 50"),
         ]
     )
     submit = SubmitField(label="Save")
@@ -90,8 +90,8 @@ class OrderForm(FlaskForm):
     @staticmethod
     def validate_date(form):
         if (
-                form.start_date.data < datetime.date.today()
-                or form.end_date.data < datetime.date.today()
+            form.start_date.data < datetime.date.today()
+            or form.end_date.data < datetime.date.today()
         ):
             flash(f"Start and End dates cannot be in the past!", category="danger")
             return None

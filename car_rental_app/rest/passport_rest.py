@@ -43,10 +43,12 @@ class PassportListApi(Resource):
             return jsonify(message="Passport with this number is already exist", status=409)
         try:
             data_to = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
-            new_passport = passport_service.create_passport(series=series,
-                                                            number=number,
-                                                            published_by=published_by,
-                                                            date_of_birth=data_to)
+            new_passport = passport_service.create_passport(
+                series=series,
+                number=number,
+                published_by=published_by,
+                date_of_birth=data_to,
+            )
             if new_passport:
                 return jsonify(message="Passport was created!", status=201)
             return jsonify(message="Passport wasn`t created!", status=400)

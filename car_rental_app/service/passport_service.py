@@ -11,14 +11,19 @@ from log import logger
 def create_passport(series, number, published_by, date_of_birth):
     """
     Function adding new passport data
-   :param series: passport series
-   :param number: passport number
-   :param published_by: number of department, which published passport
-   :param date_of_birth: user`s date of birth
-   :return: None
+    :param series: passport series
+    :param number: passport number
+    :param published_by: number of department, which published passport
+    :param date_of_birth: user`s date of birth
+    :return: None
     """
     try:
-        passport = Passport(series=series, number=number, published_by=published_by, date_of_birth=date_of_birth)
+        passport = Passport(
+            series=series,
+            number=number,
+            published_by=published_by,
+            date_of_birth=date_of_birth,
+        )
         db.session.add(passport)
         db.session.commit()
         return passport

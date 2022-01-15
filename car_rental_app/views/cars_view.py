@@ -1,5 +1,4 @@
 from flask import render_template, url_for, redirect, flash
-
 from . import public_blueprint, admin_blueprint
 from ..func import prepare_to_service
 from ..models.administrator import Administrator
@@ -37,11 +36,13 @@ def car_page():
     add_car = True
     form = CarForm()
     if form.validate_on_submit():
-        new_car = car_service.create_car(name=form.name.data,
-                                         model=form.model.data,
-                                         year=form.year.data,
-                                         price_per_day=form.price_per_day.data,
-                                         people_count=form.people_count.data)
+        new_car = car_service.create_car(
+            name=form.name.data,
+            model=form.model.data,
+            year=form.year.data,
+            price_per_day=form.price_per_day.data,
+            people_count=form.people_count.data,
+        )
         if new_car:
             flash(f"Car was created successfully!", category="success")
             # redirect to the cars page

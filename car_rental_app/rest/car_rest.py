@@ -49,11 +49,13 @@ class CarListAPI(Resource):
         price_per_day = data["price_per_day"]
         people_count = data["people_count"]
         try:
-            car_service.create_car(name=name,
-                                   model=model,
-                                   year=year,
-                                   price_per_day=price_per_day,
-                                   people_count=people_count)
+            car_service.create_car(
+                name=name,
+                model=model,
+                year=year,
+                price_per_day=price_per_day,
+                people_count=people_count,
+            )
             return jsonify(message="The car was created!", status=201)
         except:
             logger.error(f"Failed to create car.")
@@ -107,8 +109,8 @@ class CarApi(Resource):
     @staticmethod
     def delete(id):
         """
-         Method overrides delete method of Resource and works on delete method, deleting car by id
-         :return: response in json format or error messages
+        Method overrides delete method of Resource and works on delete method, deleting car by id
+        :return: response in json format or error messages
         """
         try:
             if car_service.read_car_by_id(id):

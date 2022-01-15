@@ -33,11 +33,16 @@ def edit_user():
         data_to_validate = prepare_to_service(form.data)
         try:
             if data_to_validate["password"]:
-                data_to_validate["password"] = bcrypt.generate_password_hash(data_to_validate["password"])
+                data_to_validate["password"] = bcrypt.generate_password_hash(
+                    data_to_validate["password"]
+                )
         except:
             logger.error(f"Failed to hash password!")
         user_service.update_user(current_user.id, data_to_validate)
-        flash("You have successfully edited your personal info.", category="success")
+        flash(
+            "You have successfully edited your personal info.",
+            category="success",
+        )
         # redirect to the profile page
         return redirect(url_for("public.profile_page"))
     if form.errors != {}:

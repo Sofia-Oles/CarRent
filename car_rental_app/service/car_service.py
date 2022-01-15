@@ -10,16 +10,22 @@ from log import logger
 # admin
 def create_car(name, model, year, price_per_day, people_count):
     """
-    Function adding new employee to specific department
-   :param name: car`s name
-   :param model: car`s model
-   :param year: car`s year of production
-   :param price_per_day: car`s price for rent
-   :param people_count: car`s capacity
-   :return: None
+     Function adding new employee to specific department
+    :param name: car`s name
+    :param model: car`s model
+    :param year: car`s year of production
+    :param price_per_day: car`s price for rent
+    :param people_count: car`s capacity
+    :return: None
     """
     try:
-        car = Car(name=name, model=model, year=year, price_per_day=price_per_day, people_count=people_count)
+        car = Car(
+            name=name,
+            model=model,
+            year=year,
+            price_per_day=price_per_day,
+            people_count=people_count,
+        )
         db.session.add(car)
         db.session.commit()
     except:

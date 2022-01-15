@@ -47,11 +47,15 @@ class UserListAPI(Resource):
         password = data["password"]
         password2 = data["repeat_password"]
         try:
-            UserSchema().load({"login": login,
-                               "name": name,
-                               "surname": surname,
-                               "password": password,
-                               "password2": password2})
+            UserSchema().load(
+                {
+                    "login": login,
+                    "name": name,
+                    "surname": surname,
+                    "password": password,
+                    "password2": password2,
+                }
+            )
         except ValidationError as err:
             return jsonify(message=err.messages, status=400)
         if User.query.filter_by(login=login).first() is not None:
@@ -68,7 +72,7 @@ class UserListAPI(Resource):
                     name=name,
                     surname=surname,
                     passport=new_passport,
-                    password=bcrypt.generate_password_hash(password)
+                    password=bcrypt.generate_password_hash(password),
                 )
                 if not new_user:
                     return jsonify(message="Wrong user data", status=400)
@@ -118,7 +122,9 @@ class UserApi(Resource):
             if user_service.read_user_by_id(id):
                 try:
                     if data["new_password"] == data["new_password_repeat"]:
-                        data["new_password"] = bcrypt.generate_password_hash(data["new_password"])
+                        data["new_password"] = bcrypt.generate_password_hash(
+                            data["new_password"]
+                        )
                 except:
                     logger.error(f"Failed to hash password!")
                 user_service.update_user(id, data)
@@ -131,8 +137,8 @@ class UserApi(Resource):
     @staticmethod
     def delete(id):
         """
-         Method overrides delete method of Resource and works on delete method, deleting user by id
-         :return: response in json format or error messages
+        Method overrides delete method of Resource and works on delete method, deleting user by id
+        :return: response in json format or error messages
         """
         try:
             if user_service.read_user_by_id(id):

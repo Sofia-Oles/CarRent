@@ -55,17 +55,19 @@ def order_page(car_id):
         # enough balance
         user = user_service.read_user_by_id(current_user.id)
         # price to pay
-        price_to_pay = ((end_date - start_date).days * car.price_per_day)
+        price_to_pay = (end_date - start_date).days * car.price_per_day
         if user.balance <= price_to_pay:
             flash("Balance too low! You can retrieve it", category="danger")
             # redirect to your retrieving page
             return redirect(url_for("public.edit_balance"))
         if not orders:
-            order_service.create_order(user_id=current_user.id,
-                                       car_id=car_id,
-                                       start_date=change_time(start_date),
-                                       end_date=change_time(end_date),
-                                       price=price_to_pay)
+            order_service.create_order(
+                user_id=current_user.id,
+                car_id=car_id,
+                start_date=change_time(start_date),
+                end_date=change_time(end_date),
+                price=price_to_pay,
+            )
             user_service.update_user_balance(user.id, (user.balance - price_to_pay))
             admin_service.update_balance(price_to_pay)
             flash("The order was created!", category="success")

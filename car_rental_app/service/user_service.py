@@ -10,15 +10,21 @@ from log import logger
 def create_user(login, name, surname, passport, password):
     """
     Function adding new user
-   :param login: user`s login
-   :param name: user`s name
-   :param surname: user`s surname
-   :param passport: passport object
-   :param password: user`s password
-   :return: None
+    :param login: user`s login
+    :param name: user`s name
+    :param surname: user`s surname
+    :param passport: passport object
+    :param password: user`s password
+    :return: None
     """
     try:
-        user = User(login=login, name=name, surname=surname, passport=passport, password=password)
+        user = User(
+            login=login,
+            name=name,
+            surname=surname,
+            passport=passport,
+            password=password,
+        )
         db.session.add(user)
         db.session.commit()
         return user

@@ -24,7 +24,9 @@ def create_order(user_id, car_id, start_date, end_date, price):
     try:
         user = User.query.get(user_id)
         car = Car.query.get(car_id)
-        order = Order(creator=user, car=car, start_date=start_date, end_date=end_date, price=price)
+        order = Order(
+            creator=user, car=car, start_date=start_date, end_date=end_date, price=price
+        )
         db.session.add(order)
         db.session.commit()
         return order
@@ -113,21 +115,31 @@ def retrieve_busy_dates(car_id, start_date, end_date):
     :return: set of busy orders
     """
     try:
-        busy_start = Order.query.filter(
-            extract("month", Order.start_date) <= start_date.month,
-            extract("month", Order.end_date) >= start_date.month,
-            extract("year", Order.start_date) <= start_date.year,
-            extract("year", Order.end_date) >= start_date.year,
-            extract("day", Order.start_date) <= start_date.day,
-            extract("day", Order.end_date) >= start_date.day).filter_by(car_id=car_id).all()
+        busy_start = (
+            Order.query.filter(
+                extract("month", Order.start_date) <= start_date.month,
+                extract("month", Order.end_date) >= start_date.month,
+                extract("year", Order.start_date) <= start_date.year,
+                extract("year", Order.end_date) >= start_date.year,
+                extract("day", Order.start_date) <= start_date.day,
+                extract("day", Order.end_date) >= start_date.day,
+            )
+            .filter_by(car_id=car_id)
+            .all()
+        )
 
-        busy_end = Order.query.filter(
-            extract("month", Order.start_date) <= end_date.month,
-            extract("month", Order.end_date) >= end_date.month,
-            extract("year", Order.start_date) <= end_date.year,
-            extract("year", Order.end_date) >= end_date.year,
-            extract("day", Order.start_date) <= end_date.day,
-            extract("day", Order.end_date) >= end_date.day).filter_by(car_id=car_id).all()
+        busy_end = (
+            Order.query.filter(
+                extract("month", Order.start_date) <= end_date.month,
+                extract("month", Order.end_date) >= end_date.month,
+                extract("year", Order.start_date) <= end_date.year,
+                extract("year", Order.end_date) >= end_date.year,
+                extract("day", Order.start_date) <= end_date.day,
+                extract("day", Order.end_date) >= end_date.day,
+            )
+            .filter_by(car_id=car_id)
+            .all()
+        )
         busy = set(busy_start + busy_end)
         return busy
     except:
