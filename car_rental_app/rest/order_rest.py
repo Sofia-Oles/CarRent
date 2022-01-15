@@ -55,11 +55,13 @@ class OrderListAPI(Resource):
             # check if dates is available
             orders = order_service.retrieve_busy_dates(car_id, start_date, end_date)
             if not orders:
-                order_service.create_order(user_id=user_id,
-                                           car_id=car_id,
-                                           start_date=start_date,
-                                           end_date=end_date,
-                                           price=price)
+                order_service.create_order(
+                    user_id=user_id,
+                    car_id=car_id,
+                    start_date=start_date,
+                    end_date=end_date,
+                    price=price,
+                )
                 return jsonify(message="The order was created!", status=201)
             return jsonify(message="Choose another dates!", status=400)
         except:

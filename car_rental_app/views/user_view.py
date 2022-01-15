@@ -64,7 +64,9 @@ def edit_passport():
         data_to_validate = prepare_to_service(form.data)
         try:
             passport_service.update_passport(current_user.passport_id, data_to_validate)
-            flash("You have successfully edited your passport info.", category="success")
+            flash(
+                "You have successfully edited your passport info.", category="success"
+            )
             # redirect to the profile page
             return redirect(url_for("public.profile_page"))
         except ValidationError as err:

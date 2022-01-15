@@ -40,9 +40,11 @@ class PassportListApi(Resource):
         published_by = data["published_by"]
         date_of_birth = data["date_of_birth"]
         if Passport.query.filter_by(number=number).first() is not None:
-            return jsonify(message="Passport with this number is already exist", status=409)
+            return jsonify(
+                message="Passport with this number is already exist", status=409
+            )
         try:
-            data_to = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+            data_to = datetime.strptime(date_of_birth, "%Y-%m-%d").date()
             new_passport = passport_service.create_passport(
                 series=series,
                 number=number,
