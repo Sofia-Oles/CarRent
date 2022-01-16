@@ -1,7 +1,6 @@
 """
 This module consists of the CRUD operations to work with 'order' table
 """
-from flask import jsonify
 from sqlalchemy import extract
 
 from car_rental_app import db

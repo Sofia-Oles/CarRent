@@ -4,3 +4,19 @@
 192.168.0.107 - - [08/Jan/2022 14:08:58] - - ERROR - - [user_view] "Failed to hash password!"
 192.168.0.107 - - [08/Jan/2022 14:09:37] - - WARNING - - [passport_service] "Can`t update a certain passport"
 192.168.0.107 - - [08/Jan/2022 22:42:04] - - ERROR - - [user_view] "Failed to hash password!"
+192.168.0.107 - - [15/Jan/2022 21:36:49] - - WARNING - - [passport_service] 'Can`t add a passport to the table'
+192.168.0.107 - - [15/Jan/2022 21:36:50] - - WARNING - - [passport_service] 'Can`t add a passport to the table'
+192.168.0.107 - - [15/Jan/2022 21:36:51] - - WARNING - - [user_service] 'Can`t delete a specific user or passport'
+192.168.0.107 - - [15/Jan/2022 21:37:18] - - WARNING - - [passport_service] 'Can`t add a passport to the table'
+192.168.0.107 - - [15/Jan/2022 21:37:19] - - WARNING - - [passport_service] 'Can`t add a passport to the table'
+192.168.0.107 - - [15/Jan/2022 21:37:19] - - WARNING - - [user_service] 'Can`t delete a specific user or passport'
+192.168.0.107 - - [15/Jan/2022 21:38:24] - - WARNING - - [passport_service] 'Can`t add a passport to the table'
+192.168.0.107 - - [15/Jan/2022 21:38:25] - - WARNING - - [passport_service] 'Can`t add a passport to the table'
+192.168.0.107 - - [15/Jan/2022 21:38:25] - - WARNING - - [user_service] 'Can`t delete a specific user or passport'
+192.168.0.107 - - [15/Jan/2022 21:38:41] - - WARNING - - [passport_service] 'Can`t add a passport to the table'
+192.168.0.107 - - [15/Jan/2022 21:38:41] - - WARNING - - [user_service] 'Can`t delete a specific user or passport'
+192.168.0.107 - - [15/Jan/2022 21:39:21] - - WARNING - - [passport_service] 'Can`t add a passport to the table'
+192.168.0.107 - - [15/Jan/2022 21:39:21] - - WARNING - - [user_service] 'Can`t delete a specific user or passport'
+192.168.0.107 - - [15/Jan/2022 21:41:10] - - WARNING - - [passport_service] 'Can`t add a passport to the table'
+192.168.0.107 - - [15/Jan/2022 21:41:10] - - ERROR - - [user_service] 'Can`t add a user to the table'
+192.168.0.107 - - [15/Jan/2022 21:41:10] - - WARNING - - [user_service] 'Can`t delete a specific user or passport'
