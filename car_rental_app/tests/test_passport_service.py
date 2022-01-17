@@ -12,7 +12,7 @@ test_passport = {
     "series": "KC",
     "number": 22899239,
     "published_by": 4920,
-    "date_of_birth": date.fromisoformat('2001-12-04'),
+    "date_of_birth": date.fromisoformat("2001-12-04"),
 }
 
 

@@ -49,7 +49,7 @@ class TestOrderService(BaseTestCase):
         car = Car(**test_car)
         db.session.add(car)
         db.session.commit()
-        order_service.create_order(1, 1,  **test_order)
+        order_service.create_order(1, 1, **test_order)
         order_service.create_order(1, 1, **test_order2)
         self.assertEqual(2, Order.query.count())
 
