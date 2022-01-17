@@ -64,7 +64,7 @@ class TestCarApi(BaseTestCase):
         Testing the post request to /api/car with mock
         """
         with patch(
-                "car_rental_app.db.session.add", autospec=True
+            "car_rental_app.db.session.add", autospec=True
         ) as mock_session_add, patch(
             "car_rental_app.db.session.commit", autospec=True
         ) as mock_session_commit:
