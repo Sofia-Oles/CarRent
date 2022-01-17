@@ -121,9 +121,9 @@ class UserApi(Resource):
         try:
             if user_service.read_user_by_id(id):
                 try:
-                    if data["new_password"] == data["new_password_repeat"]:
-                        data["new_password"] = bcrypt.generate_password_hash(
-                            data["new_password"]
+                    if data["password"] == data["password2"]:
+                        data["password"] = bcrypt.generate_password_hash(
+                            data["password"]
                         )
                 except:
                     logger.error(f"Failed to hash password!")
