@@ -23,9 +23,11 @@ class TestCarApi(BaseTestCase):
         response = client.get("/api/cars")
         assert response.json["status"] == http.HTTPStatus.OK
 
-    @patch("car_rental_app.service.car_service.read_all_cars",
-           autospec=True,
-           return_value=[])
+    @patch(
+        "car_rental_app.service.car_service.read_all_cars",
+        autospec=True,
+        return_value=[],
+    )
     def test_get_car_with_mock_db(self, mock_requests):
         """
         Testing the get request to /api/cars with mock method read_all_cars.
@@ -61,8 +63,11 @@ class TestCarApi(BaseTestCase):
         """
         Testing the post request to /api/car with mock
         """
-        with patch("car_rental_app.db.session.add", autospec=True) as mock_session_add, \
-                patch("car_rental_app.db.session.commit", autospec=True) as mock_session_commit:
+        with patch(
+                "car_rental_app.db.session.add", autospec=True
+        ) as mock_session_add, patch(
+            "car_rental_app.db.session.commit", autospec=True
+        ) as mock_session_commit:
             client = create_app().test_client()
             data = {
                 "name": "Land Cruiser",
@@ -71,10 +76,11 @@ class TestCarApi(BaseTestCase):
                 "price_per_day": 100,
                 "people_count": 6,
             }
-            response = client.post("/api/cars",
-                                   data=json.dumps(data),
-                                   content_type="application/json",
-                                   )
+            response = client.post(
+                "/api/cars",
+                data=json.dumps(data),
+                content_type="application/json",
+            )
             mock_session_add.assert_called_once()
             mock_session_commit.assert_called_once()
             assert response.json["status"] == http.HTTPStatus.CREATED
@@ -85,10 +91,11 @@ class TestCarApi(BaseTestCase):
         """
         client = create_app().test_client()
         data = {}
-        response = client.post("/api/cars",
-                               data=json.dumps(data),
-                               content_type="application/json",
-                               )
+        response = client.post(
+            "/api/cars",
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         assert response.json["status"] == http.HTTPStatus.BAD_REQUEST
 
     def test_put_car(self):
@@ -113,18 +120,22 @@ class TestCarApi(BaseTestCase):
             "name": "UPDATED Cruiser",
             "model": "UPDATED",
         }
-        response = client.put(url,
-                              data=json.dumps(data),
-                              content_type="application/json",
-                              )
+        response = client.put(
+            url,
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         assert response.json["status"] == http.HTTPStatus.OK
 
     def test_delete_car_with_mock(self):
         """
         Testing the post request to /api/car/id with mock
         """
-        with patch("car_rental_app.db.session.delete", autospec=True) as mock_session_del, \
-                patch("car_rental_app.db.session.commit", autospec=True) as mock_session_commit:
+        with patch(
+            "car_rental_app.db.session.delete", autospec=True
+        ) as mock_session_del, patch(
+            "car_rental_app.db.session.commit", autospec=True
+        ) as mock_session_commit:
             client = create_app().test_client()
             response = client.delete("/api/car/1", content_type="application/json")
             mock_session_del.assert_called_once()
