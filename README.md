@@ -1,7 +1,6 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/sofia-oles/epam_final_project/badge)](https://www.codefactor.io/repository/github/sofia-oles/epam_final_project)
 [![buddy pipeline](https://app.buddy.works/epam/epam-final-project/pipelines/pipeline/369262/badge.svg?token=bd35b849fb1efc1a72d3acb47e2e043f49486cb88f011285b0b4678f72cff4d4 "buddy pipeline")](https://app.buddy.works/epam/epam-final-project/pipelines/pipeline/369262)
 
-# EPAM final project
 Author: Oleskevych Sofiia
 
 # CarRent is real commercial project for family business.
